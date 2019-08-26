@@ -1,6 +1,8 @@
 from data_config import *
 from operationExcel import OperationExcel
 import json
+import xlrd
+from xlutils.copy import copy  #写入Excel
 
 class GetData:
     def __init__(self):
@@ -45,8 +47,9 @@ class GetData:
         request_data = self.opExcel.get_cel_value(row,col)
         if request_data=="":
             return None
-        #str转json 用json.loads
-        data = json.loads(request_data)
+        # print(request_data)
+        #str转json 用json.loads 请求数据用dict
+        data = eval(request_data)
         return data
 
     def get_is_test(self,row):
@@ -69,7 +72,58 @@ class GetData:
         is_headers = self.opExcel.get_cel_value(row,col)
         if is_headers=="":
             return False
-        return json.loads(is_headers)
+        #字符串变为字典
+        is_headers = eval(is_headers)
+        # is_headers={
+        #        'Authorization': 'Basic YWRtaW46MTIzNDU2', # admin:123456
+        #     }
+        return is_headers
+
+    def get_depend_id(self,row):
+        """
+        根据行号得到依赖ID的内容
+        :param row:
+        :return:
+        """
+        col =getDepenIdcol()
+        depend_id = self.opExcel.get_cel_value(row,col)
+        if depend_id =="":
+            depend_id=None
+        return depend_id
+
+    def get_depend_data(self,row):
+        """
+        根据行号得到依赖数据
+        :param row:
+        :return:
+        """
+        col = getDependDatacol()
+        depend_data = self.opExcel.get_cel_value(row,col)
+        return depend_data
+
+    def get_depend_data_belong(self,row):
+        """
+        根据行号得到依赖数据所属字段
+        :param row:
+        :return:
+        """
+        col = getDependDataBelongcol()
+        depend_data_belong =self.opExcel.get_cel_value(row,col)
+        return depend_data_belong
+
+    def get_row_by_depend_id(self,depend_id):
+        """
+        根据depend_id的内容找到所依赖的测试ID的行号
+        :param depend_id:
+        :return:
+        """
+        row = 1
+        test_id_col= getTestIdcol()
+        test_id_cols_datas = self.opExcel.get_data_by_col(test_id_col)
+        for i in  range(1,len(test_id_cols_datas)):
+            if depend_id ==str(int(test_id_cols_datas[i])):
+                return row
+            row+=1
 
 
     def get_expected_data(self,row):
@@ -82,15 +136,46 @@ class GetData:
         expected_data = self.opExcel.get_cel_value(row,col)
         return expected_data
 
-    # def get_actual_data(self,row):
-    #     """
-    #     获取实际结果
-    #     :param row:
-    #     :return:
-    #     """
-    #     col = getActualResultcol()
-    #     actual_data = self.opExcel.get_cel_value(row,col)
-    #     return actual_data
+    def get_actual_data(self,row):
+        """
+        获取实际结果
+        :param row:
+        :return:
+        """
+        col = getActualResultcol()
+        actual_data = self.opExcel.get_cel_value(row,col)
+        return actual_data
+
+    def write_actual_value(self,row,value):
+        """
+        写入实际结果
+        :param row:
+        :param value:
+        :return:
+        """
+        col = getActualResultcol()
+        work_book = xlrd.open_workbook(self.opExcel.file_name)
+        #先通过xlutils.copy下copy复制Excel
+        write_to_work = copy(work_book)
+        # 通过sheet_by_index没有write方法 而get_sheet有write方法
+        sheet_data = write_to_work.get_sheet(self.opExcel.sheet_id)
+        sheet_data.write(row,col,str(value))
+        #这里要注意保存 可是会将原来的Excel覆盖 样式消失
+        write_to_work.save(self.opExcel.file_name)
+
+    def write_test_res(self,row,value):
+        """
+        写入测试结果
+        :param row:
+        :param value:
+        :return:
+        """
+        col = getTestResultcol()
+        work_book = xlrd.open_workbook(self.opExcel.file_name)
+        write_to_work = copy(work_book)
+        sheet_data = write_to_work.get_sheet(self.opExcel.sheet_id)
+        sheet_data.write(row,col,str(value))
+        write_to_work.save(self.opExcel.file_name)
 
 
 

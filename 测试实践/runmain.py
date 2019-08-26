@@ -22,7 +22,7 @@ class RunMain:
         if method=='POST':
             res = self.post(url,data,headers)
         else:
-            res = self.get(url.headers)
+            res = self.get(url,headers)
         return res
 
 

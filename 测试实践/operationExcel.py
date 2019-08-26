@@ -42,6 +42,32 @@ class OperationExcel():
         """
         return self.tables.ncols
 
+    def get_data_by_row(self,row):
+        """
+        根据行号获取某一行的内容
+        :param row:
+        :return:
+        """
+        if row<0:
+            row=0
+        if row>self.get_nrows():
+            row=self.get_nrows()
+        data = self.tables.row_values(row)
+        return data
+
+    def get_data_by_col(self,col):
+        """
+        根据列号返回某一列的内容
+        :param col:
+        :return:
+        """
+        if col<0:
+            col=0
+        if col>self.get_ncols():
+            col=self.get_ncols()
+        data = self.tables.col_values(col)
+        return data
+
     def get_cel_value(self,row,col):
         """
         获取某个指定单元格的内容
@@ -52,16 +78,10 @@ class OperationExcel():
         data =  self.tables.cell_value(row,col)
         return data
 
-    def write_value(self,row,col,value):
-        work_book = xlrd.open_workbook(self.file_name)
-        #先通过xlutils.copy下copy复制Excel
-        write_to_work = copy(work_book)
-        # 通过sheet_by_index没有write方法 而get_sheet有write方法
-        sheet_data = write_to_work.get_sheet(self.sheet_id)
-        sheet_data.write(row,col,value)
-        #这里要注意保存 可是会将原来的Excel覆盖 样式消失
-        write_to_work.save(self.file_name)
+
+
 
 if __name__=="__main__":
     operatinrExcel = OperationExcel()
-    print(operatinrExcel.write_value(3,3,2))
+    print(operatinrExcel.get_data_by_row(1))
+
