@@ -1,6 +1,5 @@
 from data_config import *
 from operationExcel import OperationExcel
-import json
 import xlrd
 from xlutils.copy import copy  #写入Excel
 
@@ -35,7 +34,7 @@ class GetData:
         :return:
         """
         col =getRequestUrlcol()
-        request_url = self.opExcel.get_cel_value(row,col)
+        request_url = self.prefix_url+self.opExcel.get_cel_value(row,col)
         return request_url
 
     def get_request_method(self,row):
@@ -45,7 +44,7 @@ class GetData:
         :return:
         """
         col = getRequestMethodcol()
-        request_method = self.prefix_url+self.opExcel.get_cel_value(row,col)
+        request_method =self.opExcel.get_cel_value(row,col)
         return request_method
 
     def get_request_data(self,row):

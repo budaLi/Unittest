@@ -27,9 +27,14 @@ class SendEmail:
         #关闭邮箱
         server.close()
 
-    def send_test(self,userlist,passlist,faillist):
-        passNumber  = float(len(passlist))
-        failNumber = float(len(faillist))
+    def send_test(self,userlist,passNumber,failNumber):
+        """
+        发送测试结果
+        :param userlist:
+        :param passNumber:
+        :param failNumber:
+        :return:
+        """
         totalNumber = passNumber+ failNumber
 
         #%.2f表示保留小数点后两位小数 %%表示百分之百
@@ -39,13 +44,12 @@ class SendEmail:
         sub = "测试结果报告"
         content = " 测试用例总数\t%s个\n通过个数\t%s个\n失败个数\t%s个\n通过率\t%s\n失败率\t%s"%(totalNumber,passNumber,failNumber,passPercentage,failPercentae)
         self.send_email(userlist,sub,content)
-
+        return True
 
 if __name__=="__main__":
     send =SendEmail()
     user_list = ['1364826576@qq.com']
     passlist = [1,2,3,4]
     faillist= [5,5,6,7,7,8]
-    send.send_test(user_list,passlist,faillist)
-    dic={"clusterNodeInfo":{"guid": "001", "name": "server1","nodeID": "xxxx-xxxx-xxxx-xxxxxxxxxxx","type": 0 }}
+    send.send_test(user_list,4,5)
 
