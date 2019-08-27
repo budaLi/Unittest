@@ -47,4 +47,5 @@ if __name__=="__main__":
     passlist = [1,2,3,4]
     faillist= [5,5,6,7,7,8]
     send.send_test(user_list,passlist,faillist)
+    dic={"clusterNodeInfo":{"guid": "001", "name": "server1","nodeID": "xxxx-xxxx-xxxx-xxxxxxxxxxx","type": 0 }}
 

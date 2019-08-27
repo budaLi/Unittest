@@ -1,7 +1,7 @@
 import requests
 class RunMain:
     """
-    重新封装get和post方法
+    封装get和post方法
     """
     def get(self,url,headers=None):
         if headers:

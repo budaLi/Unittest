@@ -1,5 +1,5 @@
 import xlrd
-from xlutils.copy import copy  #写入Excel
+# from xlutils.copy import copy  #写入Excel
 
 class OperationExcel():
     """

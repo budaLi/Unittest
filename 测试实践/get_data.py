@@ -8,6 +8,7 @@ class GetData:
     def __init__(self):
         #初始化操作excel的对象
         self.opExcel =  OperationExcel()
+        self.prefix_url = "http://10.0.20.126/VMS4Service.cgi?Cmd="
 
     def get_case_lines(self):
         """
@@ -16,6 +17,16 @@ class GetData:
         """
         lines =  self.opExcel.get_nrows()-1
         return lines
+
+    def get_request_id(self,row):
+        """
+        测试用例id
+        :param row:
+        :return:
+        """
+        col = getTestIdcol()
+        id = self.opExcel.get_cel_value(row,col)
+        return str(int(id))
 
     def get_request_url(self,row):
         """
@@ -34,7 +45,7 @@ class GetData:
         :return:
         """
         col = getRequestMethodcol()
-        request_method = self.opExcel.get_cel_value(row,col)
+        request_method = self.prefix_url+self.opExcel.get_cel_value(row,col)
         return request_method
 
     def get_request_data(self,row):
@@ -59,7 +70,7 @@ class GetData:
         """
         col = getIsTestcol()
         is_test = self.opExcel.get_cel_value(row,col)
-        if is_test=="Y" or "YES":
+        if is_test== "Y" or is_test==  "YES":
             return True
         return False
 
@@ -154,7 +165,7 @@ class GetData:
         :return:
         """
         col = getActualResultcol()
-        work_book = xlrd.open_workbook(self.opExcel.file_name)
+        work_book = xlrd.open_workbook(self.opExcel.file_name,formatting_info=True)
         #先通过xlutils.copy下copy复制Excel
         write_to_work = copy(work_book)
         # 通过sheet_by_index没有write方法 而get_sheet有write方法
@@ -171,12 +182,14 @@ class GetData:
         :return:
         """
         col = getTestResultcol()
-        work_book = xlrd.open_workbook(self.opExcel.file_name)
+        work_book = xlrd.open_workbook(self.opExcel.file_name,formatting_info=True)
         write_to_work = copy(work_book)
         sheet_data = write_to_work.get_sheet(self.opExcel.sheet_id)
         sheet_data.write(row,col,str(value))
         write_to_work.save(self.opExcel.file_name)
 
-
+if __name__=="__main__":
+    op = GetData()
+    op.write_test_res(4,4)
 
 

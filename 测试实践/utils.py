@@ -10,12 +10,15 @@ class Utils:
         :param str2:
         :return: bool
         """
+        str1=str1.replace("true","True")
+        if str1 =="":
+            return False
         if not isinstance(str1,dict):
             str1=eval(str1)
         if not isinstance(str2,dict):
             str2=eval(str2)
-        print(str1,type(str1))
-        print(str2,type(str2))
+        # print(str1,type(str1))
+        # print(str2,type(str2))
         return str1==str2
 
     def encrypt_by_base64(self,strs):
