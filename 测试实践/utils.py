@@ -68,7 +68,7 @@ if __name__=="__main__":
     dic2 ={'permission': {'clusterManage': True, 'deviceControl': True, 'deviceManage': True, 'download': True, 'opmManage': True, 'playback': True, 'systemLog': True, 'tvmanager': True, 'userManage': True, 'view': True}, 'returnState': {'errorMsg': 0, 'stateCode': 0}}
     # import json
     # print(json.dumps(dic1))
-    print(util.str_is_equal(dic1,dic2))
+    # print(util.str_is_equal(dic1,dic2))
     print(util.encapsulate_headers('admin','123456'))
 
 
