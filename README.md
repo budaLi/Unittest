@@ -1,6 +1,6 @@
-##使用说明
-本项目只需使用测试实践目录。其余文件可自行删除。
-###项目环境搭建
+>##使用说明
+>本项目只需使用测试实践目录。其余文件可自行删除。
+>###项目环境搭建
 >python环境 python 3.x
 >基础环境 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xlrd,xlutils,json,jsonpath_rw
 >发送邮件 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple smtplib,email
