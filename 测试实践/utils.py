@@ -19,7 +19,11 @@ class Utils:
             str2=eval(str2)
         # print(str1,type(str1))
         # print(str2,type(str2))
-        return str1==str2
+        try:
+            return str1['returnState']['stateCode']==str2['returnState']['stateCode']
+        except Exception as e:
+            print("Error")
+            return False
 
     def encrypt_by_base64(self,strs):
         """

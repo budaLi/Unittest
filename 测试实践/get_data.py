@@ -2,12 +2,12 @@ from data_config import *
 from operationExcel import OperationExcel
 import xlrd
 from xlutils.copy import copy  #写入Excel
-
+import HTMLTestRunner
 class GetData:
     def __init__(self):
         #初始化操作excel的对象
         self.opExcel =  OperationExcel()
-        self.prefix_url = "http://10.0.20.126/VMS4Service.cgi?Cmd="
+        self.prefix_url = "http://10.0.20.126/VMS2Service.cgi?Cmd="
 
     def get_case_lines(self):
         """
@@ -59,8 +59,10 @@ class GetData:
             return None
         # print(request_data)
         #str转json 用json.loads 请求数据用dict
-        data = eval(request_data)
-        return data
+
+        #等待后端修复前后端交互数据的bug
+        # data = eval(request_data)
+        return request_data
 
     def get_is_test(self,row):
         """

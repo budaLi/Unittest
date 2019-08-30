@@ -4,6 +4,7 @@
 # @Software: PyCharm
 from matplotlib import pyplot as plt
 
+
 class ShowTables:
     """
     测试结果可视化
