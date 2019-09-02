@@ -1,6 +1,8 @@
-from get_data import GetData
-from runmain import RunMain
-from jsonpath_rw import jsonpath,parse
+from jsonpath_rw import parse
+from TestMain.runmain import RunMain
+
+from TestMain.get_data import GetData
+
 
 class DependData:
     def __init__(self,depend_id):

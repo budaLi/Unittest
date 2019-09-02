@@ -1,7 +1,9 @@
 #测试包可以组织多个测试用例 测试包还可以嵌套测试包
 # 在使用测试包组织多个测试用例和测试包后 程序可以使用测试运行器 TestRunner 来运行该测试包包含的所有测试用例
 import unittest
-import HTMLTestRunner
+
+from otherLearn import HTMLTestRunner
+
 
 def say_hello():
     return "hello world"
@@ -62,7 +64,7 @@ if __name__=="__main__":
     #     suite=whole_suite()
     #     runner.run(suite)
     with open("./out.html",'wb') as f:
-        runner = HTMLTestRunner.HTMLTestRunner(f,title="这是一个报告")
+        runner = HTMLTestRunner.HTMLTestRunner(f, title="这是一个报告")
         suite = whole_suite()
         print(suite)
         runner.run(suite)
