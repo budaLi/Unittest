@@ -15,7 +15,7 @@ class OperationExcel():
             self.file_name=file_name
             self.sheet_id = 0
         else:
-            self.file_name=r"C:\Users\lenovo\PycharmProjects\AutoTest\MyAutoTest\Excel\test_excel\test_Login.xls"
+            self.file_name=r"/home/libuda/PycharmProjects/Unittest/MyAutoTest/Excel/test_excel/test_Login.xls"
             self.sheet_id=0
         self.tables=self.get_tables()
 

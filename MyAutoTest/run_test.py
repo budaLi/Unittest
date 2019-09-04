@@ -13,7 +13,7 @@ class Test:
     def __init__(self,test_excel=None):
         self.runMethod = RunMain()
         self.data = GetData(test_excel)
-        self.write_data = GetData(r"C:\Users\lenovo\PycharmProjects\AutoTest\MyAutoTest\Excel\res_excel\testDemo.xls")
+        self.write_data = GetData(r"/home/libuda/PycharmProjects/Unittest/MyAutoTest/Excel/res_excel/testDemo.xls")
         self.util = Utils()
         self.test_data = TestDataConfig(test_excel)
         self.mock = Mock()
