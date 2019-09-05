@@ -132,9 +132,9 @@ class Test:
         lines = self.write_data.get_write_lines()  # 获取Excel中第一个空行的行号
         for i in range(row_counts):
             # 模拟相应
-            # response = self.mock.main(method, url, all_test[i], headers[i])
+            response = self.mock.main(method, url, all_test[i], headers[i])
             # 真实响应
-            response = self.runMethod.main(method, url, all_test[i], headers[i])
+            # response = self.runMethod.main(method, url, all_test[i], headers[i])
             state = int(statecode[i])
             test_res = "Fail"
             if self.util.is_equal_code(state, response):
