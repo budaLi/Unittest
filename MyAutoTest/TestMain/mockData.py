@@ -1,4 +1,4 @@
-from mock import mock
+from unittest import mock
 class Mock:
     """
     模拟响应数据

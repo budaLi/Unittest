@@ -125,3 +125,20 @@ headers={
    'Referer': 'http://10.0.20.126/',
    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko'
 }
+
+headers2={
+   'Accept': '*/*',
+   'Accept-Encoding': 'gzip, deflate',
+    'Auth-Token': '1568137083',
+   'Accept-Language': 'zh-CN',
+   'Connection': 'keep-alive',
+   'Content-Length': '0',
+   'Content-Type': 'application/x-www-form-urlencoded',
+   'Host': '10.0.20.126',
+   'Referer': 'http://10.0.20.126/',
+   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko'
+}
+
+s='{"accountInfo":{"userID":"100000","username":"libuda","password":"123456","functionalRoleList":"","resourceRoleList":""}}'
+print(len(s))
+

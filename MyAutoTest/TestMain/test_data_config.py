@@ -13,7 +13,7 @@ class TestDataConfig:
         if file_name is None:
             file_name= ""
         self.opExcel = OperationExcel(file_name,0)
-
+        self.pre_url = "http://10.0.20.126/VMS2Service.cgi?Cmd="
         self.test_name = [0, 1]  # 测试功能行列
         self.test_url = [1, 1]  # 测试接口行列
         self.test_method = [2, 1]  # 测试方法行列
@@ -40,7 +40,7 @@ class TestDataConfig:
         测试接口
         :return:
         """
-        return self.opExcel.get_cel_value(*self.test_url)
+        return self.pre_url+self.opExcel.get_cel_value(*self.test_url)
 
     def get_test_method(self):
         """

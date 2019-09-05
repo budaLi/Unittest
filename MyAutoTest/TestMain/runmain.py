@@ -1,30 +1,29 @@
 import requests
+
+
 class RunMain:
     """
     封装get和post方法
     """
-    def get(self,url,headers=None):
-        if headers:
-            #verify  取消https 中ssl证书验证
-            response = requests.get(url=url,headers=headers,verify=False).json()
-        else:
-            response = requests.get(url=url,verify=False).json()
-        return response.json()
 
-    def post(self,url,data,headers=None):
+    def get(self, url, headers=None):
         if headers:
-            response = requests.post(url=url,data=data,headers=headers).json()
-
+            # verify  取消https 中ssl证书验证
+            response = requests.get(url=url, headers=headers, verify=False).json()
         else:
-            response= requests.post(url=url,data=data).json()
+            response = requests.get(url=url, verify=False).json()
         return response
 
-    def main(self,method,url,data= None,headers = None):
-        if method=='POST':
-            res = self.post(url,data,headers)
+    def post(self, url, data, headers=None):
+        if headers:
+            response = requests.post(url=url, data=data, headers=headers).json()
         else:
-            res = self.get(url,headers)
+            response = requests.post(url=url, data=data).json()
+        return response
+
+    def main(self, method, url, data=None, headers=None):
+        if method == 'POST':
+            res = self.post(url, data, headers)
+        else:
+            res = self.get(url, headers)
         return res
-
-
-
