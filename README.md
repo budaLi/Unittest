@@ -20,27 +20,27 @@
 
 >4. TestMain目录 
 
-    >4.1 test_data_config.py 测试用例Excel读取配置 
+>4.1    test_data_config.py 测试用例Excel读取配置 
 
-    >4.2 res_data_config.py 测试结果Excel读取配置 
+>4.2    res_data_config.py 测试结果Excel读取配置 
 
-    >4.3 operationExcel.py 操作Excel封装
+>4.3    operationExcel.py 操作Excel封装
 
-    >4.4 operationsJson.py  操作Json数据封装
+>4.4    operationsJson.py  操作Json数据封装
 
-    >4.5 runmain.py   post和get请求封装
+>4.5    runmain.py   post和get请求封装
 
-    >4.6 dependData.py  测试依赖  
+>4.6    dependData.py  测试依赖  
 
-    >4.7 sendEmail.py  发送邮件
+>4.7    sendEmail.py  发送邮件
 
-    >4.8 showTables.py 测试结果可视化 目前只有饼状图
+>4.8    showTables.py 测试结果可视化 目前只有饼状图
 
-    >4.9 utils.py  工具类
+>4.9    utils.py  工具类
 
-    >4.10 mockData.py 模拟数据
+>4.10   mockData.py 模拟数据
 
-    >4.11 headers.py  请求头生成
+>4.11   headers.py  请求头生成
 
 >### 基础流程
 
