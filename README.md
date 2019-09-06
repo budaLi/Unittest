@@ -52,7 +52,7 @@
 
 >2.测试结果示图
 
->2. ![测试结果示图](https://github.com/budaLi/Unittest/blob/master/res.png)
+> ![测试结果示图](https://github.com/budaLi/Unittest/blob/master/res.png)
 
 
 
