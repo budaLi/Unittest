@@ -28,7 +28,7 @@ class Headers:
                 'Auth-Token': "",
                 'Accept-Language': 'zh-CN',
                 'Connection': 'keep-alive',
-                'Content-Length': "121",
+                'Content-Length': "",
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Host': '10.0.20.126',
                 'Referer': 'http://10.0.20.126/',
@@ -89,9 +89,9 @@ if __name__ == "__main__":
 
     s = '{"accountInfo":{"userID":100000,"username":"libuda","password":"233333","functionalRoleList":[{ "functionalRole":"" }], "resourceRoleList":[{ "resourceRole":"" ] }}'
     s2 = '{"accountInfo":{"userID":"100000","username":"libuda","password":"123456","functionalRoleList":"","resourceRoleList":""}}'
-    ss =json.dumps(s2)
+    ss = json.dumps(s2)
     print(type(s))
-    print("ss",len(ss))
+    print("ss", len(ss))
     s3 = '{"accountInfo":{"userID":"100000","username":"libuda","password":"123456","functionalRoleList":"","resourceRoleList":""}}:'
     print(len(s2))
     print(len(s3))
