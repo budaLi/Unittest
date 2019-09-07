@@ -2,44 +2,60 @@
 >本项目只需使用MyAutoTest目录。其余文件可自行删除。
 >### 项目环境
 >1.python环境 python 3.x
->2.基础环境 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xlrd,xlutils,json,jsonpath_rw  
 
->3.发送邮件 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple smtplib,email  
+>2.其他依赖包 在req.txt中 可使用 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r req.txt下载依赖
 
->4.测试结果可视化 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple matplotlib         
+>3.目录结构如下 
 
+![](https://github.com/budaLi/Unittest/blob/master/1.png)
+
+
+>### 项目说明 
+
+>1. Excel目录  存放Excel测试文件及生成结果的Exel
+
+>2. Image目录  存在无关照片 
   
->### 项目说明
->1.run_test.py  项目入口  配置好环境后运行该文件即可启动本项目
+>3. templete目录 为特殊接口类生成数据模板 登录接口单独提出
 
->2.data_config.py Excel读取配置 
+>4. TestMain目录 
 
->3.operationExcel.py 操作Excel封装
+>4.1    test_data_config.py 测试用例Excel读取配置 
 
->4.operationsJson.py  操作Json数据封装 本项目未用到
+>4.2    res_data_config.py 测试结果Excel读取配置 
 
->5.runmain.py   post和get请求封装
+>4.3    operationExcel.py 操作Excel封装
 
->6.dependData.py  测试依赖  本项目未用到
+>4.4    operationsJson.py  操作Json数据封装
 
->7.sendEmail.py  发送邮件
+>4.5    runmain.py   post和get请求封装
 
->8.showTables.py 测试结果可视化 目前只有饼状图
+>4.6    dependData.py  测试依赖  
 
->9.utils.py  工具类
+>4.7    sendEmail.py  发送邮件
 
->10.testDemo.xls  Excel文件
+>4.8    showTables.py 测试结果可视化 目前只有饼状图
 
+>4.9    utils.py  工具类
+
+>4.10   mockData.py 模拟数据
+
+>4.11   headers.py  请求头生成
 
 >### 基础流程
 
-![](https://github.com/budaLi/Unittest/blob/master/%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5/images/mind.png)
+> 配置好依赖包后 在主文件中 输入 python run_test.py -f +测试用例所在文件夹目录 即可
 
->### 运行结果
+>1.测试用例示图
 
->1.![思维导图](https://github.com/budaLi/Unittest/blob/master/%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5/images/screen.png)
+> ![测试用例示图](https://github.com/budaLi/Unittest/blob/master/ceshi.png)
 
->2.啦啦啦啦啦啦啦
+>2.测试结果示图
+
+> ![测试结果示图](https://github.com/budaLi/Unittest/blob/master/res.png)
+
+
+
 
 
 
