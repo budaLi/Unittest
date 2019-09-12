@@ -45,7 +45,7 @@ def chack_res(response):
 def add_user(user_data):
     response = mock.main(method="post", url=add_user_url, data=user_data, headers=add_user_header)
     if chack_res(response):
-        print("添加用户成功")
+        print("添加用户成功 %s"%user_data)
 
 
 # def add_user2(add_user_num):
@@ -69,10 +69,14 @@ def add_user(user_data):
 
 if __name__=="__main__":
     # add_user(10000)
+    import datetime
+    start = datetime.datetime.now()
     the = []
     for i in range(1000):
         user1 = str(i)
-
         the.append(threading.Thread(target=add_user,args=(user1,)))
+    count = 0
     for one in the:
         one.start()
+    end = datetime.datetime.now()
+    print("time",end-start)
