@@ -8,6 +8,7 @@ from queue import Queue
 
 add_user_queue = Queue()  # 添加用户信息队列
 login_header_queue = Queue()  # 登录请求头队列
+check_response_queue = Queue()  # 检测response队列
 del_user_queue = Queue()  # 删除用户队列
 init_user_id = 100000  # 用户起始id
 init_user_pwd = "123456"  # 用户数据默认密码
@@ -59,9 +60,11 @@ print(response_headers)
 # add_user_header['Auth-Token'] = response_headers["auth-token"]
 
 
-def chack_res(response):
-    response = eval(response)
-    return response['returnState']['stateCode'] == 0
+def chack_res():
+    while not check_response_queue.empty():
+        response = eval(check_response_queue.get())
+        if response['returnState']['stateCode'] == 0:
+            print("success")
 
 
 def generate_user_info(user_id, max_num=100):
@@ -84,8 +87,7 @@ def add_user():
     while not add_user_queue.empty():
         user_data = add_user_queue.get(timeout=3)
         response = mock.main(method="post", url=add_user_url, data=user_data, headers=add_user_header)
-        if chack_res(response):
-            print("添加用户成功 %s" % user_data)
+        check_response_queue.put(response)
 
 
 def user_login():
@@ -93,8 +95,7 @@ def user_login():
     while not login_header_queue.empty():
         headers = login_header_queue.get()
         response = mock.main(method="post", url=login_url, headers=headers)
-        if chack_res(response):
-            print("登录成功")
+        check_response_queue.put(response)
 
 
 def del_user():
@@ -102,13 +103,13 @@ def del_user():
     while not del_user_queue.empty():
         user_id = del_user_queue.get()
         response = mock.main(method="post", url=del_user_url, headers="")
-        if chack_res(response):
-            print("删除成功")
+        check_response_queue.put(response)
 
 
 if __name__ == "__main__":
 
     # 添加用户
+    print("添加用户中")
     generate_user_info(init_user_id, add_user_num)
     add_user_thread_list = []
     for i in range(thread_num):
@@ -120,6 +121,20 @@ if __name__ == "__main__":
 
     for one in add_user_thread_list:
         one.join()
+    check_res_thread_list= []
+    for i in range(thread_num):
+        check_res_thread = threading.Thread(target=chack_res, args=())
+        check_res_thread_list.append(check_res_thread)
+
+    for one in check_res_thread_list:
+        one.start()
+
+    for one in check_res_thread_list:
+        one.join()
+
+    print("添加完成")
+
+    print("开始登录测试")
 
     # 登录测试
     user_login_thread_list = []
@@ -133,5 +148,17 @@ if __name__ == "__main__":
 
     for one in user_login_thread_list:
         one.join()
+
+    check_res_thread_list= []
+    for i in range(thread_num):
+        check_res_thread = threading.Thread(target=chack_res, args=())
+        check_res_thread_list.append(check_res_thread)
+
+    for one in check_res_thread_list:
+        one.start()
+
+    for one in check_res_thread_list:
+        one.join()
+
     end = datetime.datetime.now()
     print("time", end - start)
