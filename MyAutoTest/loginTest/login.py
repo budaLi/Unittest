@@ -9,7 +9,9 @@ from queue import Queue
 # 20.0.88.xxx  255.255.0.0
 class LoginTest:
     def __init__(self):
-        self.init_proxy_ip = "20.0.88.%s:80"  # 初始ip
+        self.init_proxy_ip = "http://20.0.88.%s:80"  # 初始ip
+        self.max_use = 50  # 每个ip最大使用次数
+        self.proxy_pools = self.gen_proxy_pool(num=20)  # 代理ip  num  生成ip个数
         self.add_user_queue = Queue()  # 添加用户信息队列
         self.login_header_queue = Queue()  # 登录请求头队列
         self.check_response_queue = Queue()  # 检测response队列
@@ -65,12 +67,17 @@ class LoginTest:
         self.init_add_user_header['Auth-Token'] = response_headers["auth-token"]  # 登录获取authtoken
         return self.init_add_user_header
 
-    def proxy_pool(self):
+    def gen_proxy_pool(self, num):
         """
         ip代理池
+        :param num:  代理ip数量
         :return:
         """
-        pass
+        proxy_pools_queue = Queue()
+        for i in range(num):
+            for _ in range(self.max_use):
+                proxy_pools_queue.put(self.init_proxy_ip % str(i))
+        return proxy_pools_queue
 
     def check_res(self):
         """
@@ -97,7 +104,8 @@ class LoginTest:
             # add_user_data2["accountInfo"]["username"] = "li" + str(user_id + i)
             # user_info = add_user_data2
             self.add_user_queue.put(user_info)
-            self.login_header_queue.put(self.utils.encapsulate_headers(name=str(user_id + i), password=str(user_id + i)))
+            self.login_header_queue.put(
+                self.utils.encapsulate_headers(name=str(user_id + i), password=str(user_id + i)))
             self.del_user_queue.put(user_id + i)
 
     def add_user(self):
@@ -115,10 +123,16 @@ class LoginTest:
         用户登录
         :return:
         """
+        proxies = ""
+        if not self.proxy_pools.empty():
+            proxies = self.proxy_pools.get()
         while not self.login_header_queue.empty():
             headers = self.login_header_queue.get()
             # response = mock.main(method="post", url=login_url, headers=headers)
-            response = requests.post(url=self.login_url, headers=headers)
+            if proxies != "":
+                response = requests.post(url=self.login_url, headers=headers, proxies=proxies)
+            else:
+                response = requests.post(url=self.login_url, headers=headers)
             self.check_response_queue.put(response.json())
 
     def del_user(self):
@@ -128,7 +142,8 @@ class LoginTest:
         """
         while not self.del_user_queue.empty():
             user_id = self.del_user_queue.get()
-            response = requests.post(url=self.del_user_url, data='{"userID": "%s"}' % str(user_id), headers=self.add_user_header)
+            response = requests.post(url=self.del_user_url, data='{"userID": "%s"}' % str(user_id),
+                                     headers=self.add_user_header)
             self.check_response_queue.put(response.json())
 
     def main(self):
