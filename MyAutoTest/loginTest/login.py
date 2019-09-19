@@ -21,7 +21,7 @@ class LoginTest:
         self.functionalRoleList = ""  # 用户默认角色列表
         self.resourceRoleList = ""  # 用户默认资源列表
         self.content_length = "123"  # 默认添加用户数据字段长度
-        self.add_user_num = 700  # 默认添加用户数
+        self.add_user_num = 5000  # 默认添加用户数
         self.login_user_num = self.add_user_num  # 默认登录用户数
         self.thread_num = int(self.add_user_num / 50)  # 默认开启线程数
         self.user_name_prefix = "li"
@@ -62,8 +62,12 @@ class LoginTest:
         self.del_user_header = self.add_user_header  # 删除用户请求头
 
     def get_add_user_headers(self):
+        """
+        模拟登录获取authtoken
+        :return:
+        """
         response_headers = requests.post(url=self.login_url, headers=self.login_headers).headers
-        # response_headers = mock.main(method="post", url=login_url, headers=login_headers)
+        # init_add_user_header = mock.main(method="post", url=login_url, headers=login_headers)
         self.init_add_user_header['Auth-Token'] = response_headers["auth-token"]  # 登录获取authtoken
         return self.init_add_user_header
 
@@ -118,6 +122,11 @@ class LoginTest:
             response = requests.post(url=self.add_user_url, data=user_data, headers=self.add_user_header)
             self.check_response_queue.put(response.json())
 
+            # mock
+            # response = self.mock.main(method="post", url=self.add_user_url, data=user_data,
+            #                           headers=self.add_user_header)
+            # self.check_response_queue.put(response)
+
     def user_login(self):
         """
         用户登录
@@ -128,12 +137,16 @@ class LoginTest:
             proxies = self.proxy_pools.get()
         while not self.login_header_queue.empty():
             headers = self.login_header_queue.get()
-            # response = mock.main(method="post", url=login_url, headers=headers)
             if proxies != "":
                 response = requests.post(url=self.login_url, headers=headers, proxies=proxies)
             else:
                 response = requests.post(url=self.login_url, headers=headers)
             self.check_response_queue.put(response.json())
+
+            # mock
+            # response = self.mock.main(method="post", url=self.login_url, headers=headers)
+            # print(response)
+            # self.check_response_queue.put(response)
 
     def del_user(self):
         """
@@ -145,6 +158,10 @@ class LoginTest:
             response = requests.post(url=self.del_user_url, data='{"userID": "%s"}' % str(user_id),
                                      headers=self.add_user_header)
             self.check_response_queue.put(response.json())
+
+            # mock
+            # response = self.mock.main(method="post", url=self.login_url, headers=self.del_user_header)
+            # self.check_response_queue.put(response)
 
     def main(self):
         key = input("是否添加用户 y/n")
@@ -159,6 +176,7 @@ class LoginTest:
 
             for one in add_user_thread_list:
                 one.start()
+            for one in add_user_thread_list:
                 one.join()
 
             print("添加完成")
@@ -175,36 +193,40 @@ class LoginTest:
 
                 for one in user_login_thread_list:
                     one.start()
+                for one in user_login_thread_list:
                     one.join()
 
                 end = datetime.datetime.now()
                 print("time", end - start)
 
                 print("登录测试完成")
-            else:
-                key = input("是否进行删除测试 y/n")
-                if key == "y":
-                    # 删除用户
-                    print("开始删除测试")
-                    user_del_thread_list = []
-                    for i in range(self.thread_num):
-                        user_del_thread = threading.Thread(target=self.del_user, args=())
-                        user_del_thread_list.append(user_del_thread)
 
-                    for one in user_del_thread_list:
-                        one.start()
-                        one.join()
-                    print("删除测试完成")
+            key = input("是否进行删除测试 y/n")
+            if key == "y":
+                # 删除用户
+                print("开始删除测试")
+                user_del_thread_list = []
+                for i in range(self.thread_num):
+                    user_del_thread = threading.Thread(target=self.del_user, args=())
+                    user_del_thread_list.append(user_del_thread)
 
-                    # 状态检测
-                    check_res_thread_list = []
-                    for i in range(self.thread_num):
-                        check_res_thread = threading.Thread(target=self.check_res, args=())
-                        check_res_thread_list.append(check_res_thread)
+                for one in user_del_thread_list:
+                    one.start()
+                for one in user_del_thread_list:
+                    one.join()
+                print("删除测试完成")
 
-                    for one in check_res_thread_list:
-                        one.start()
-                        one.join()
+                # 状态检测
+                check_res_thread_list = []
+                for i in range(self.thread_num):
+                    check_res_thread = threading.Thread(target=self.check_res, args=())
+                    check_res_thread_list.append(check_res_thread)
+
+                for one in check_res_thread_list:
+                    one.start()
+
+                for one in check_res_thread_list:
+                    one.join()
 
 
 if __name__ == "__main__":
