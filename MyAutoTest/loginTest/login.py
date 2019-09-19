@@ -21,9 +21,10 @@ class LoginTest:
         self.functionalRoleList = ""  # 用户默认角色列表
         self.resourceRoleList = ""  # 用户默认资源列表
         self.content_length = "123"  # 默认添加用户数据字段长度
-        self.add_user_num = 5000  # 默认添加用户数
+        self.add_user_num = 100  # 默认添加用户数
         self.login_user_num = self.add_user_num  # 默认登录用户数
-        self.thread_num = int(self.add_user_num / 50)  # 默认开启线程数
+        self.thread_num = int(self.add_user_num / 10) if self.add_user_num < 100 else int(
+            self.add_user_num / 100)  # 默认开启线程数
         self.user_name_prefix = "li"
         self.mock = Mock()
         self.utils = Utils()
@@ -88,12 +89,16 @@ class LoginTest:
         状态检测
         :return:
         """
+        success = 0
+        fail = 0
         while not self.check_response_queue.empty():
             response = self.check_response_queue.get()
             if response['returnState']['stateCode'] == 0:
-                print("success")
+                success += 1
             else:
+                fail += 1
                 print("response error", response['returnState']['stateCode'])
+        print("success : %s  fail :%s" % (success, fail))
 
     def generate_user_info(self, user_id, max_num=100):
         """
@@ -108,8 +113,9 @@ class LoginTest:
             # add_user_data2["accountInfo"]["username"] = "li" + str(user_id + i)
             # user_info = add_user_data2
             self.add_user_queue.put(user_info)
-            self.login_header_queue.put(
-                self.utils.encapsulate_headers(name=str(user_id + i), password=str(user_id + i)))
+            tem = self.utils.encapsulate_headers(name=self.user_name_prefix + str(user_id + i),
+                                                 password=self.init_user_pwd)
+            self.login_header_queue.put(tem)
             self.del_user_queue.put(user_id + i)
 
     def add_user(self):
@@ -133,15 +139,22 @@ class LoginTest:
         :return:
         """
         proxies = ""
-        if not self.proxy_pools.empty():
-            proxies = self.proxy_pools.get()
+
         while not self.login_header_queue.empty():
             headers = self.login_header_queue.get()
-            if proxies != "":
-                response = requests.post(url=self.login_url, headers=headers, proxies=proxies)
-            else:
+            if not self.proxy_pools.empty():
+                proxies = self.proxy_pools.get()
+            proxy_dict = {
+                'http': proxies,  # 注意此处是http的ip
+            }
+            try:
+                response = requests.post(url=self.login_url, headers=headers, proxies=proxy_dict)
+                print(response)
+            except Exception as e:
+                print(e)
                 response = requests.post(url=self.login_url, headers=headers)
-            self.check_response_queue.put(response.json())
+                # print(headers,response.json())
+                self.check_response_queue.put(response.json())
 
             # mock
             # response = self.mock.main(method="post", url=self.login_url, headers=headers)
