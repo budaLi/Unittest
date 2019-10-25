@@ -8,18 +8,18 @@ from TestMain.utils import all_path
 from TestMain.headers import Headers
 from templete.specil_Interface import SpecilInterface
 from templete.user_login import Login
-import json
+
 
 class Test:
-    def __init__(self, test_excel=None):
+    def __init__(self, test_excel=None, res_excel=None):
         self.runMethod = RunMain()
         # self.data = GetData(test_excel)
-        self.write_data = GetData(r"/home/libuda/PycharmProjects/Unittest/MyAutoTest/Excel/res_excel/testDemo.xls")
+        # self.write_data = GetData(r"/home/libuda/PycharmProjects/Unittest/MyAutoTest/Excel/res_excel/testDemo.xls")
+        self.write_data = GetData(res_excel)
         self.util = Utils()
         self.test_data = TestDataConfig(test_excel)
         self.mock = Mock()
         self.sendemail = SendEmail()
-
 
     def run_test(self):
         """
@@ -104,16 +104,21 @@ class Test:
         if url.split("=")[-1] == "UserLogin":
             login_headers = Login()
             headers = login_headers.get_headers()  # 请求头在登录时生成
+
         else:
             # 为满足登录要求的headers形式将统一的headers加长
             try:
-                with open("header.json",'r') as f:
+                with open("header.json", 'r') as f:
                     header = f.read()
                     # print("读取headers",header)
             except Exception as e:
                 print("读取异常")
-            # print("type",type(eval(header)))
-            headers = [eval(header) for i in range(len(all_test))]
+
+            # 在这里要根据每个测试用力提交的数据长度 更新content-length
+            headers = []
+            for one_test in all_test:
+                header['Content-Length'] = len(one_test)
+                headers.append(eval(header))
 
         self.specil_Interface = SpecilInterface(url)
         tem_data = self.specil_Interface.all_func(*all_test)
@@ -179,13 +184,15 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="脚本信息描述")
     parser.add_argument("-f", "--filepath", help="测试用例文件夹")
+    parser.add_argument("-r", "--respath", help="测试结果")
     args = vars(parser.parse_args())  # vars() 函数返回对象object的属性和属性值的字典对象。
     # print(args['filepath'])  #获取输入的测试用例文件路径
-    test_elcels = all_path(args['filepath'])
-    for excel in test_elcels:
-        if excel.endswith("xls"):
-            print("正在对 %s 进行测试" % excel.split("/")[-1])
-            test = Test(excel)
+    test_excels = all_path(args['filepath'])
+    res_excels = args['respath']
+    for test_excel in test_excels:
+        if test_excel.endswith("xls"):
+            print("正在对 %s 进行测试" % test_excel.split("/")[-1])
+            test = Test(test_excel, res_excels)
             test.run_test()
 
         print("正在s对 %s 进行测试"%excel.split("\\")[-1])

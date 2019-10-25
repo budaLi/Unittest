@@ -3,6 +3,8 @@
 # @FileName: specil_Interface.py
 # @Software: PyCharm
 import json
+
+
 class SpecilInterface:
     """
     为特殊的接口提供数据请求模板
@@ -22,16 +24,22 @@ class SpecilInterface:
         if self.name == "UserAddUser":
             res = []
             for user in args:
-                user = tuple(user)
-                dic = {}
-                dic["accountInfo"]={}
-                dic['accountInfo']['userID'] = user[0]
-                dic['accountInfo']['username'] = user[1]
-                dic['accountInfo']['password'] = user[2]
-                dic['accountInfo']['functionalRoleList'] = user[3]
-                dic['accountInfo']['resourceRoleList'] = user[4]
-                tem= json.dumps(dic)
-                res.append(tem)
+                tem = '{"accountInfo":{"userID":"%s","username":"%s","password":"%s",' \
+                      '"functionalRoleList":"%s","resourceRoleList":"%s"}}' % user
+                res.append(tem + ":")
+
+                # 提交的data 长度存在问题
+
+                # user = tuple(user)
+                # dic = {}
+                # dic["accountInfo"]={}
+                # dic['accountInfo']['userID'] = user[0]
+                # dic['accountInfo']['username'] = user[1]
+                # dic['accountInfo']['password'] = user[2]
+                # dic['accountInfo']['functionalRoleList'] = user[3]
+                # dic['accountInfo']['resourceRoleList'] = user[4]
+                # tem= json.dumps(dic)
+                # res.append(tem)
 
             return res
         else:
