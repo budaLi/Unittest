@@ -187,6 +187,11 @@ if __name__ == "__main__":
             print("正在对 %s 进行测试" % excel.split("/")[-1])
             test = Test(excel)
             test.run_test()
+
+        print("正在s对 %s 进行测试"%excel.split("\\")[-1])
+        test = Test(excel)
+        test.run_test()
+
     # test = Test(r"C:\Users\lenovo\PycharmProjects\AutoTest\MyAutoTest\Excel\test_excel\test_UserAddUser.xls")
     # # test = Test()
     # test.run_test()
