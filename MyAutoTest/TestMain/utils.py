@@ -127,6 +127,10 @@ if __name__ == "__main__":
     #             "returnState": {
     #                 "errorMsg": 0,
     #                 "stateCode": 0
+
+
+
+
     #             }
     #         }
     # dic2 ={'permission': {'clusterManage': True, 'deviceControl': True, 'deviceManage': True, 'download': True, 'opmManage': True, 'playback': True, 'systemLog': True, 'tvmanager': True, 'userManage': True, 'view': True}, 'returnState': {'errorMsg': 0, 'stateCode': 0}}

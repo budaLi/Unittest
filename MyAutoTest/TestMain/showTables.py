@@ -14,7 +14,12 @@ class ShowTables:
         # 解决中文乱码
         plt.rcParams['font.sans-serif'] = ['SimHei']
 
+<<<<<<< Updated upstream
     def draw_pie(self, no_test_num, test_pass_num, test_fail_num):
+=======
+    def draw_pie(self,no_test_num,test_pass_num,test_fail_num):
+
+>>>>>>> Stashed changes
         """
         #饼状图
         # labeldistance，文本的位置离远点有多远，1.1指1.1倍半径的位置
