@@ -1,10 +1,10 @@
+import os
 from TestMain.get_data import GetData
 from TestMain.mockData import Mock
 from TestMain.runmain import RunMain
 from TestMain.sendEmail import SendEmail
 from TestMain.test_data_config import TestDataConfig
 from TestMain.utils import Utils
-from TestMain.utils import all_path
 from TestMain.headers import Headers
 from templete.specil_Interface import SpecilInterface
 from templete.user_login import Login
@@ -102,14 +102,14 @@ class Test:
         all_test = self.test_data.get_all_test()  # 所有测试用例
 
         if url.split("=")[-1] == "UserLogin":
-            login_headers = Login()
+            login_headers = Login(file_name=r"D:\PycharmProjects\AutoTest\MyAutoTest\Excel\test_excel\test_Login.xls")
             headers = login_headers.get_headers()  # 请求头在登录时生成
 
         else:
             # 为满足登录要求的headers形式将统一的headers加长
             try:
                 with open("header.json", 'r') as f:
-                    header = f.read()
+                    header = eval(f.read())
                     # print("读取headers",header)
             except Exception as e:
                 print("读取异常")
@@ -118,7 +118,7 @@ class Test:
             headers = []
             for one_test in all_test:
                 header['Content-Length'] = len(one_test)
-                headers.append(eval(header))
+                headers.append(header)
 
         self.specil_Interface = SpecilInterface(url)
         tem_data = self.specil_Interface.all_func(*all_test)
@@ -150,7 +150,7 @@ class Test:
                 # 登录成功 headers可用
                 if state == 0 and url.split("=")[-1] == "UserLogin":
                     hed = Headers(url, headers[i])
-                    hed.get_headers()
+                    # hed.get_headers()
                     # print("生成headr",self.headers)
             else:
                 test_fail += 1
@@ -183,21 +183,21 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="脚本信息描述")
-    parser.add_argument("-f", "--filepath", help="测试用例文件夹")
-    parser.add_argument("-r", "--respath", help="测试结果")
+    parser.add_argument("-f", "--filepath", help="测试用例文件夹",default="./Excel/test_excel/")
+    parser.add_argument("-r", "--respath", help="测试结果",default="./Excel/res_excel/testDemo.xls")
     args = vars(parser.parse_args())  # vars() 函数返回对象object的属性和属性值的字典对象。
     # print(args['filepath'])  #获取输入的测试用例文件路径
-    test_excels = all_path(args['filepath'])
+
+    root_dir = "./Excel/test_excel/"
+    # 定义测试的顺序
+    test_order = ["test_Login.xls","test_UserAddUser.xls","test_QueryUserList.xls","test_ChangePassword.xls","test_DeleteUser.xls"]
     res_excels = args['respath']
-    for test_excel in test_excels:
-        if test_excel.endswith("xls"):
+    for test_excel in test_order:
+            path = os.path.join(root_dir,test_excel)
             print("正在对 %s 进行测试" % test_excel.split("/")[-1])
-            test = Test(test_excel, res_excels)
+            test = Test(path, res_excels)
             test.run_test()
 
-        print("正在s对 %s 进行测试"%excel.split("\\")[-1])
-        test = Test(excel)
-        test.run_test()
 
     # test = Test(r"C:\Users\lenovo\PycharmProjects\AutoTest\MyAutoTest\Excel\test_excel\test_UserAddUser.xls")
     # # test = Test()
