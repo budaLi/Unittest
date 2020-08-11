@@ -161,7 +161,7 @@ class Test:
         pass_percentage = float(test_pass / (test_pass + test_fail) * 100)
         fail_percentage = float(test_fail / (test_pass + test_fail) * 100)
 
-        print("测试完成!")
+        # print("测试完成!")
         # print("===============================")
         # print("\033[1;34m☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆\033[0m")
         # print("\033[1;34m☆\033[0m\t\t\t\t\t\033[1;29m测 试 报 告\033[0m\t\t\t\t\t    ")
@@ -190,9 +190,30 @@ if __name__ == "__main__":
 
     root_dir = "./Excel/test_excel/"
     # 定义测试的顺序
-    test_order = ["test_Login.xls","test_UserAddUser.xls","test_QueryUserList.xls","test_ChangePassword.xls","test_DeleteUser.xls"]
+
+    # 用户管理
+    user_manage = ["test_Login.xls","test_UserAddUser.xls","test_QueryUserList.xls","test_ChangePassword.xls","test_DeleteUser.xls"]
+    # 集群管理
+    node_manage = ["test_SearchNodeList.xls","test_AddNotes.xls","test_DeleteNotes.xls","test_ModifyNodeInfo.xls","test_QueryNodeList.xls",
+                   "test_SetNtpServer.xls","test_QueryNtpServer.xls","test_SetVmsInfo.xls","test_QueryVmsInfo.xls"]
+
+    # 任务管理
+    task_manage = ["test_QueryTaskList.xls"]
+    # 运维管理
+    operations_manage = ["test_QueryAllResiyrceInfo.xls"]
+    # 日志管理
+    log_manage = ["test_GetServerLog.xls"]
+
+    # 总的测试任务
+    all_task = []
+    all_task.extend(user_manage)
+    all_task.extend(node_manage)
+    all_task.extend(task_manage)
+    all_task.extend(operations_manage)
+    all_task.extend(log_manage)
+
     res_excels = args['respath']
-    for test_excel in test_order:
+    for test_excel in all_task:
             path = os.path.join(root_dir,test_excel)
             print("正在对 %s 进行测试" % test_excel.split("/")[-1])
             test = Test(path, res_excels)
